@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const languageQuestions: Question[] = [
+  {
+    id: 'lang-1',
+    question: 'Which word is a naming word (noun)?',
+    options: ['Run', 'Dog', 'Fast'],
+    correctIndex: 1,
+    explanation: '"Dog" is a naming word (noun) because it names an animal.',
+  },
+  {
+    id: 'lang-2',
+    question: 'Which word names a person?',
+    options: ['Teacher', 'Jump', 'Happy'],
+    correctIndex: 0,
+    explanation: '"Teacher" is a naming word for a person.',
+  },
+  {
+    id: 'lang-3',
+    question: 'What do you say when you meet someone in the morning?',
+    options: ['Good night', 'Good morning', 'Goodbye'],
+    correctIndex: 1,
+    explanation: 'We say "Good morning" as a greeting early in the day.',
+  },
+  {
+    id: 'lang-4',
+    question: 'What is the proper greeting when you are leaving?',
+    options: ['Goodbye', 'Good morning', 'Hello'],
+    correctIndex: 0,
+    explanation: 'We say "Goodbye" when we are leaving.',
+  },
+  {
+    id: 'lang-5',
+    question: 'Which word names a place?',
+    options: ['School', 'Happy', 'Sing'],
+    correctIndex: 0,
+    explanation: '"School" is a naming word for a place.',
+  },
+  {
+    id: 'lang-6',
+    question: 'Which word names an animal?',
+    options: ['Blue', 'Cat', 'Walk'],
+    correctIndex: 1,
+    explanation: '"Cat" is a naming word for an animal.',
+  },
+  {
+    id: 'lang-7',
+    question: 'Choose the correct word: "I ___ a student."',
+    options: ['am', 'is', 'are'],
+    correctIndex: 0,
+    explanation: 'We say "I am" when talking about ourselves.',
+  },
+  {
+    id: 'lang-8',
+    question: 'Which word is a color?',
+    options: ['Run', 'Red', 'Book'],
+    correctIndex: 1,
+    explanation: '"Red" is a color word.',
+  },
+  {
+    id: 'lang-9',
+    question: 'Which sentence is written correctly?',
+    options: ['i like dogs', 'I like dogs.', 'I Like dogs'],
+    correctIndex: 1,
+    explanation: 'A sentence should start with a capital letter and end with a period: "I like dogs."',
+  },
+  {
+    id: 'lang-10',
+    question: 'Which word names a thing?',
+    options: ['Chair', 'Sing', 'Quickly'],
+    correctIndex: 0,
+    explanation: '"Chair" is a naming word for a thing.',
+  },
+  {
+    id: 'lang-11',
+    question: 'Which word describes how something feels or looks?',
+    options: ['Soft', 'Table', 'Jump'],
+    correctIndex: 0,
+    explanation: '"Soft" is a describing word (adjective).',
+  },
+  {
+    id: 'lang-12',
+    question: 'Which word shows an action?',
+    options: ['Run', 'Apple', 'Green'],
+    correctIndex: 0,
+    explanation: '"Run" is an action word (verb).',
+  },
+];

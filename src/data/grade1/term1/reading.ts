@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const readingQuestions: Question[] = [
+  {
+    id: 'read-1',
+    question: 'How many letters are in the English alphabet?',
+    options: ['20', '26', '30'],
+    correctIndex: 1,
+    explanation: 'The English alphabet has 26 letters, from A to Z.',
+  },
+  {
+    id: 'read-2',
+    question: 'Which of these letters is a vowel?',
+    options: ['B', 'E', 'T'],
+    correctIndex: 1,
+    explanation: 'The vowels are A, E, I, O, and U. E is a vowel.',
+  },
+  {
+    id: 'read-3',
+    question: 'What letter comes right after B?',
+    options: ['A', 'C', 'D'],
+    correctIndex: 1,
+    explanation: 'In the alphabet, C comes right after B.',
+  },
+  {
+    id: 'read-4',
+    question: 'Which word rhymes with "cat"?',
+    options: ['Dog', 'Hat', 'Sun'],
+    correctIndex: 1,
+    explanation: '"Hat" rhymes with "cat" because they end with the same sound.',
+  },
+  {
+    id: 'read-5',
+    question: 'What sound does the letter "S" usually make?',
+    options: ['/s/ like in "sun"', '/m/ like in "moon"', '/b/ like in "ball"'],
+    correctIndex: 0,
+    explanation: 'The letter S makes the /s/ sound, like in the word "sun".',
+  },
+  {
+    id: 'read-6',
+    question: 'Which of these is a sight word we often see in books?',
+    options: ['the', 'zqx', 'plm'],
+    correctIndex: 0,
+    explanation: '"the" is a common sight word that appears often in books.',
+  },
+  {
+    id: 'read-7',
+    question: 'What is the first letter of the word "Dog"?',
+    options: ['D', 'O', 'G'],
+    correctIndex: 0,
+    explanation: 'The word "Dog" starts with the letter D.',
+  },
+  {
+    id: 'read-8',
+    question: 'Which word means the opposite of "big"?',
+    options: ['Small', 'Tall', 'Wide'],
+    correctIndex: 0,
+    explanation: '"Small" is the opposite of "big".',
+  },
+  {
+    id: 'read-9',
+    question: 'Complete the sentence: "The sun is very ___."',
+    options: ['bright', 'cold', 'quiet'],
+    correctIndex: 0,
+    explanation: 'The sun is very bright. This makes the most sense.',
+  },
+  {
+    id: 'read-10',
+    question: 'Which letter is a consonant?',
+    options: ['A', 'E', 'M'],
+    correctIndex: 2,
+    explanation: 'M is a consonant. A and E are vowels.',
+  },
+  {
+    id: 'read-11',
+    question: 'Which of these is a complete sentence?',
+    options: ['running fast', 'The dog runs fast.', 'fast dog the'],
+    correctIndex: 1,
+    explanation: 'A complete sentence has a subject and a verb, like "The dog runs fast."',
+  },
+  {
+    id: 'read-12',
+    question: 'Which word starts with the same sound as "Ball"?',
+    options: ['Bag', 'Cat', 'Sun'],
+    correctIndex: 0,
+    explanation: '"Bag" starts with the /b/ sound, just like "Ball".',
+  },
+];

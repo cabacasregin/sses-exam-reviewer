@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const gmrcQuestions: Question[] = [
+  {
+    id: 'gmrc-1',
+    question: 'What do you say when someone gives you something?',
+    options: ['Sorry', 'Thank you', 'Goodbye'],
+    correctIndex: 1,
+    explanation: 'We say "Thank you" to show we are grateful.',
+  },
+  {
+    id: 'gmrc-2',
+    question: 'What do you say when you accidentally bump into someone?',
+    options: ['Sorry', 'Please', 'Hello'],
+    correctIndex: 0,
+    explanation: 'We say "Sorry" or "Excuse me" when we bump into someone.',
+  },
+  {
+    id: 'gmrc-3',
+    question: 'It is right to do this before eating a meal.',
+    options: ['Watch TV', 'Wash your hands', 'Run outside'],
+    correctIndex: 1,
+    explanation: 'We should wash our hands before eating to stay clean and healthy.',
+  },
+  {
+    id: 'gmrc-4',
+    question: 'If you make a mistake, what should you do?',
+    options: ['Blame someone else', 'Say sorry', 'Hide it'],
+    correctIndex: 1,
+    explanation: 'Saying sorry shows that you are honest and know right from wrong.',
+  },
+  {
+    id: 'gmrc-5',
+    question: 'Which of these is a member of your family?',
+    options: ['Teacher', 'Mother', 'Doctor'],
+    correctIndex: 1,
+    explanation: 'Mother is a member of the family, along with father, siblings, and others.',
+  },
+  {
+    id: 'gmrc-6',
+    question: 'It is good manners to do this to your elders.',
+    options: ['Ignore them', 'Respect them', 'Argue with them'],
+    correctIndex: 1,
+    explanation: 'We should always show respect to our elders.',
+  },
+  {
+    id: 'gmrc-7',
+    question: 'Which is a good habit to practice with friends?',
+    options: ['Sharing toys', 'Grabbing toys', 'Shouting at them'],
+    correctIndex: 0,
+    explanation: 'Sharing with friends shows kindness and good manners.',
+  },
+  {
+    id: 'gmrc-8',
+    question: 'What should you do when you borrow something from a friend?',
+    options: ['Keep it', 'Return it', 'Break it'],
+    correctIndex: 1,
+    explanation: 'We should always return what we borrow, and take care of it.',
+  },
+  {
+    id: 'gmrc-9',
+    question: 'Always telling the truth is called...',
+    options: ['Honesty', 'Laziness', 'Selfishness'],
+    correctIndex: 0,
+    explanation: 'Honesty means always telling the truth.',
+  },
+  {
+    id: 'gmrc-10',
+    question: 'Before sleeping, it is polite to say this to your parents.',
+    options: ['Goodnight', 'Goodbye forever', 'Nothing'],
+    correctIndex: 0,
+    explanation: 'We say "Goodnight" to our parents before we sleep.',
+  },
+  {
+    id: 'gmrc-11',
+    question: 'What should you do when your classmate is hurt?',
+    options: ['Laugh at them', 'Help them', 'Walk away'],
+    correctIndex: 1,
+    explanation: 'A caring person helps others who are hurt or in trouble.',
+  },
+  {
+    id: 'gmrc-12',
+    question: 'Which word means taking good care of your things?',
+    options: ['Responsibility', 'Carelessness', 'Laziness'],
+    correctIndex: 0,
+    explanation: 'Being responsible means taking good care of your things and duties.',
+  },
+];

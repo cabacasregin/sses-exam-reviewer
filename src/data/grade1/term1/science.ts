@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const scienceQuestions: Question[] = [
+  {
+    id: 'sci-1',
+    question: 'Which body part do we use to see?',
+    options: ['Ears', 'Eyes', 'Nose'],
+    correctIndex: 1,
+    explanation: 'We use our eyes to see things around us.',
+  },
+  {
+    id: 'sci-2',
+    question: 'Which body part do we use to hear?',
+    options: ['Ears', 'Tongue', 'Skin'],
+    correctIndex: 0,
+    explanation: 'We use our ears to hear sounds.',
+  },
+  {
+    id: 'sci-3',
+    question: 'Which sense organ helps us smell things?',
+    options: ['Nose', 'Eyes', 'Ears'],
+    correctIndex: 0,
+    explanation: 'Our nose helps us smell different scents.',
+  },
+  {
+    id: 'sci-4',
+    question: 'Which of these is a living thing?',
+    options: ['Rock', 'Dog', 'Chair'],
+    correctIndex: 1,
+    explanation: 'A dog is a living thing because it can grow, move, and breathe.',
+  },
+  {
+    id: 'sci-5',
+    question: 'Which of these is a nonliving thing?',
+    options: ['Tree', 'Fish', 'Table'],
+    correctIndex: 2,
+    explanation: 'A table is nonliving. It does not grow or breathe.',
+  },
+  {
+    id: 'sci-6',
+    question: 'What do plants need to grow well?',
+    options: ['Sunlight and water', 'Toys', 'Books'],
+    correctIndex: 0,
+    explanation: 'Plants need sunlight, water, and air to grow.',
+  },
+  {
+    id: 'sci-7',
+    question: 'How many senses do people have?',
+    options: ['3', '5', '7'],
+    correctIndex: 1,
+    explanation: 'People have 5 senses: sight, hearing, smell, taste, and touch.',
+  },
+  {
+    id: 'sci-8',
+    question: 'Which body part helps us taste food?',
+    options: ['Tongue', 'Ears', 'Hair'],
+    correctIndex: 0,
+    explanation: 'Our tongue helps us taste if food is sweet, sour, or salty.',
+  },
+  {
+    id: 'sci-9',
+    question: 'Which body part helps us feel if something is hot or cold?',
+    options: ['Skin', 'Nose', 'Ears'],
+    correctIndex: 0,
+    explanation: 'Our skin lets us feel touch, heat, and cold.',
+  },
+  {
+    id: 'sci-10',
+    question: 'Which of these does NOT need food to survive?',
+    options: ['A cat', 'A bird', 'A rock'],
+    correctIndex: 2,
+    explanation: 'A rock is nonliving, so it does not need food to survive.',
+  },
+  {
+    id: 'sci-11',
+    question: 'What covers our body and helps us feel touch?',
+    options: ['Skin', 'Bones', 'Blood'],
+    correctIndex: 0,
+    explanation: 'Skin covers our body and is the organ we use for touch.',
+  },
+  {
+    id: 'sci-12',
+    question: 'Which is an example of a living thing that can grow?',
+    options: ['A plant', 'A pencil', 'A ball'],
+    correctIndex: 0,
+    explanation: 'A plant is alive and can grow taller over time.',
+  },
+];

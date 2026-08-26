@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const makabansaQuestions: Question[] = [
+  {
+    id: 'mkb-1',
+    question: 'What are the colors of the Philippine flag?',
+    options: ['Red, white, blue, and yellow', 'Green, black, and orange', 'Pink and purple'],
+    correctIndex: 0,
+    explanation: 'The Philippine flag has blue, red, white, and a yellow sun and stars.',
+  },
+  {
+    id: 'mkb-2',
+    question: 'What is our national language?',
+    options: ['English', 'Filipino', 'Spanish'],
+    correctIndex: 1,
+    explanation: 'Filipino is the national language of the Philippines.',
+  },
+  {
+    id: 'mkb-3',
+    question: 'Who helps take care of us when we are sick?',
+    options: ['Doctor', 'Firefighter', 'Farmer'],
+    correctIndex: 0,
+    explanation: 'A doctor is a community helper who takes care of sick people.',
+  },
+  {
+    id: 'mkb-4',
+    question: 'Who helps put out fires in our community?',
+    options: ['Teacher', 'Firefighter', 'Vendor'],
+    correctIndex: 1,
+    explanation: 'A firefighter helps put out fires and keep us safe.',
+  },
+  {
+    id: 'mkb-5',
+    question: 'Where do we go to learn new things every day?',
+    options: ['School', 'Market', 'Hospital'],
+    correctIndex: 0,
+    explanation: 'School is where we go to learn from our teachers.',
+  },
+  {
+    id: 'mkb-6',
+    question: 'What is the name of our country?',
+    options: ['Philippines', 'Japan', 'Thailand'],
+    correctIndex: 0,
+    explanation: 'We live in the Philippines.',
+  },
+  {
+    id: 'mkb-7',
+    question: 'What is the national flower of the Philippines?',
+    options: ['Rose', 'Sampaguita', 'Sunflower'],
+    correctIndex: 1,
+    explanation: 'The Sampaguita is the national flower of the Philippines.',
+  },
+  {
+    id: 'mkb-8',
+    question: 'What is the national bird of the Philippines?',
+    options: ['Philippine Eagle', 'Parrot', 'Sparrow'],
+    correctIndex: 0,
+    explanation: 'The Philippine Eagle is our national bird.',
+  },
+  {
+    id: 'mkb-9',
+    question: 'Who helps keep our community safe from harm?',
+    options: ['Police officer', 'Cook', 'Artist'],
+    correctIndex: 0,
+    explanation: 'A police officer protects and keeps the community safe.',
+  },
+  {
+    id: 'mkb-10',
+    question: 'What should we do to keep our surroundings clean?',
+    options: ['Throw trash properly', 'Litter everywhere', 'Burn plastic'],
+    correctIndex: 0,
+    explanation: 'Throwing trash in the proper place keeps our community clean.',
+  },
+  {
+    id: 'mkb-11',
+    question: 'Which of these is a Philippine national symbol?',
+    options: ['Sampaguita flower', 'Cherry blossom', 'Tulip'],
+    correctIndex: 0,
+    explanation: 'The Sampaguita is a well-known Philippine national symbol.',
+  },
+  {
+    id: 'mkb-12',
+    question: 'Who grows the food we eat, like rice and vegetables?',
+    options: ['Farmer', 'Pilot', 'Engineer'],
+    correctIndex: 0,
+    explanation: 'Farmers plant and grow the food we eat every day.',
+  },
+];

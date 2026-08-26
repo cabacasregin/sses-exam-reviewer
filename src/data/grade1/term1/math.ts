@@ -1,0 +1,88 @@
+import { Question } from '../../types';
+
+export const mathQuestions: Question[] = [
+  {
+    id: 'math-1',
+    question: 'Count the stars: ⭐⭐⭐⭐. How many are there?',
+    options: ['3', '4', '5'],
+    correctIndex: 1,
+    explanation: 'There are 4 stars in the picture.',
+  },
+  {
+    id: 'math-2',
+    question: 'What number comes after 5?',
+    options: ['4', '6', '7'],
+    correctIndex: 1,
+    explanation: 'Counting up from 5, the next number is 6.',
+  },
+  {
+    id: 'math-3',
+    question: 'What number comes before 10?',
+    options: ['8', '9', '11'],
+    correctIndex: 1,
+    explanation: '9 comes right before 10 when counting.',
+  },
+  {
+    id: 'math-4',
+    question: 'Which number is greater, 7 or 4?',
+    options: ['7', '4', 'They are equal'],
+    correctIndex: 0,
+    explanation: '7 is greater than 4 because it comes later when counting.',
+  },
+  {
+    id: 'math-5',
+    question: 'Which shape has 3 sides?',
+    options: ['Circle', 'Triangle', 'Square'],
+    correctIndex: 1,
+    explanation: 'A triangle has exactly 3 sides and 3 corners.',
+  },
+  {
+    id: 'math-6',
+    question: 'Which shape is perfectly round with no corners?',
+    options: ['Circle', 'Square', 'Triangle'],
+    correctIndex: 0,
+    explanation: 'A circle is round and has no sides or corners.',
+  },
+  {
+    id: 'math-7',
+    question: '2 + 3 = ?',
+    options: ['4', '5', '6'],
+    correctIndex: 1,
+    explanation: '2 + 3 = 5.',
+  },
+  {
+    id: 'math-8',
+    question: '5 - 2 = ?',
+    options: ['2', '3', '4'],
+    correctIndex: 1,
+    explanation: '5 - 2 = 3.',
+  },
+  {
+    id: 'math-9',
+    question: 'Which number is the "1st" (first)?',
+    options: ['1', '2', '3'],
+    correctIndex: 0,
+    explanation: 'The ordinal number "1st" means first, which is number 1.',
+  },
+  {
+    id: 'math-10',
+    question: 'Count by tens: 10, 20, ___?',
+    options: ['21', '30', '25'],
+    correctIndex: 1,
+    explanation: 'When counting by tens, after 20 comes 30.',
+  },
+  {
+    id: 'math-11',
+    question: 'Which shape has 4 equal sides?',
+    options: ['Square', 'Triangle', 'Circle'],
+    correctIndex: 0,
+    explanation: 'A square has 4 sides that are all the same length.',
+  },
+  {
+    id: 'math-12',
+    question: 'How many fingers do you have on one hand?',
+    options: ['4', '5', '6'],
+    correctIndex: 1,
+    explanation: 'One hand has 5 fingers.',
+  },
+];
