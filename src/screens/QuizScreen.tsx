@@ -8,7 +8,7 @@ import { OptionButton } from '../components/OptionButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { colors, subjectColors } from '../theme/colors';
-import { saveSubjectResult } from '../utils/storage';
+import { saveSetResult } from '../utils/storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
 
@@ -24,11 +24,12 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 export function QuizScreen({ route, navigation }: Props) {
-  const { gradeKey, termKey, subjectKey } = route.params;
+  const { gradeKey, termKey, subjectKey, setKey } = route.params;
   const subject = findSubject(gradeKey, termKey, subjectKey);
+  const set = subject?.questionSets.find((s) => s.key === setKey);
   const accentColor = subjectColors[subjectKey] ?? colors.primary;
 
-  const questions: Question[] = useMemo(() => shuffle(subject?.questions ?? []), [subject]);
+  const questions: Question[] = useMemo(() => shuffle(set?.questions ?? []), [set]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -36,7 +37,7 @@ export function QuizScreen({ route, navigation }: Props) {
   const [correctCount, setCorrectCount] = useState(0);
   const [saving, setSaving] = useState(false);
 
-  if (!subject || questions.length === 0) {
+  if (!subject || !set || questions.length === 0) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyText}>This subject has no questions yet.</Text>
@@ -66,13 +67,14 @@ export function QuizScreen({ route, navigation }: Props) {
     }
 
     setSaving(true);
-    await saveSubjectResult(gradeKey, termKey, subjectKey, correctCount, questions.length);
+    await saveSetResult(gradeKey, termKey, subjectKey, setKey, correctCount, questions.length);
     setSaving(false);
 
     navigation.replace('Results', {
       gradeKey,
       termKey,
       subjectKey,
+      setKey,
       score: correctCount,
       total: questions.length,
       missedQuestionIds: missedIds,
@@ -91,7 +93,7 @@ export function QuizScreen({ route, navigation }: Props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={[styles.subjectLabel, { color: accentColor }]}>
-          {subject.emoji} {subject.title}
+          {subject.emoji} {subject.title} • {set.title}
         </Text>
         <Text style={styles.counter}>
           Question {currentIndex + 1} of {questions.length}

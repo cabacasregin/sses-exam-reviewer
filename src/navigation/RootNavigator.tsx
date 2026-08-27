@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import { HomeScreen } from '../screens/HomeScreen';
+import { SubjectSetsScreen } from '../screens/SubjectSetsScreen';
 import { QuizScreen } from '../screens/QuizScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
 import { colors } from '../theme/colors';
@@ -22,6 +23,11 @@ export function RootNavigator() {
           name="Home"
           component={HomeScreen}
           options={{ title: 'Exam Reviewer' }}
+        />
+        <Stack.Screen
+          name="SubjectSets"
+          component={SubjectSetsScreen}
+          options={{ title: 'Practice Sets' }}
         />
         <Stack.Screen
           name="Quiz"

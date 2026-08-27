@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export interface SubjectProgress {
+export interface SetProgress {
   bestScore: number;
   bestTotal: number;
   lastScore: number;
@@ -9,37 +9,39 @@ export interface SubjectProgress {
   updatedAt: number;
 }
 
-function progressKey(gradeKey: string, termKey: string, subjectKey: string) {
-  return `progress:${gradeKey}:${termKey}:${subjectKey}`;
+function progressKey(gradeKey: string, termKey: string, subjectKey: string, setKey: string) {
+  return `progress:${gradeKey}:${termKey}:${subjectKey}:${setKey}`;
 }
 
-export async function getSubjectProgress(
+export async function getSetProgress(
   gradeKey: string,
   termKey: string,
-  subjectKey: string
-): Promise<SubjectProgress | null> {
+  subjectKey: string,
+  setKey: string
+): Promise<SetProgress | null> {
   try {
-    const raw = await AsyncStorage.getItem(progressKey(gradeKey, termKey, subjectKey));
-    return raw ? (JSON.parse(raw) as SubjectProgress) : null;
+    const raw = await AsyncStorage.getItem(progressKey(gradeKey, termKey, subjectKey, setKey));
+    return raw ? (JSON.parse(raw) as SetProgress) : null;
   } catch {
     return null;
   }
 }
 
-export async function saveSubjectResult(
+export async function saveSetResult(
   gradeKey: string,
   termKey: string,
   subjectKey: string,
+  setKey: string,
   score: number,
   total: number
-): Promise<SubjectProgress> {
-  const existing = await getSubjectProgress(gradeKey, termKey, subjectKey);
+): Promise<SetProgress> {
+  const existing = await getSetProgress(gradeKey, termKey, subjectKey, setKey);
   const nextBest =
     !existing || score / total > existing.bestScore / existing.bestTotal
       ? { bestScore: score, bestTotal: total }
       : { bestScore: existing.bestScore, bestTotal: existing.bestTotal };
 
-  const updated: SubjectProgress = {
+  const updated: SetProgress = {
     ...nextBest,
     lastScore: score,
     lastTotal: total,
@@ -49,7 +51,7 @@ export async function saveSubjectResult(
 
   try {
     await AsyncStorage.setItem(
-      progressKey(gradeKey, termKey, subjectKey),
+      progressKey(gradeKey, termKey, subjectKey, setKey),
       JSON.stringify(updated)
     );
   } catch {
@@ -59,13 +61,16 @@ export async function saveSubjectResult(
   return updated;
 }
 
-export async function getAllProgressForTerm(
+export async function getSetProgressForSubject(
   gradeKey: string,
   termKey: string,
-  subjectKeys: string[]
-): Promise<Record<string, SubjectProgress | null>> {
+  subjectKey: string,
+  setKeys: string[]
+): Promise<Record<string, SetProgress | null>> {
   const entries = await Promise.all(
-    subjectKeys.map(async (key) => [key, await getSubjectProgress(gradeKey, termKey, key)] as const)
+    setKeys.map(
+      async (setKey) => [setKey, await getSetProgress(gradeKey, termKey, subjectKey, setKey)] as const
+    )
   );
   return Object.fromEntries(entries);
 }

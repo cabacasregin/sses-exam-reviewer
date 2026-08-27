@@ -1,12 +1,9 @@
-import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { findTerm } from '../data';
 import { SubjectCard } from '../components/SubjectCard';
 import { colors, subjectColors } from '../theme/colors';
-import { getAllProgressForTerm, SubjectProgress } from '../utils/storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -15,23 +12,6 @@ const TERM_KEY = 'term1';
 
 export function HomeScreen({ navigation }: Props) {
   const term = findTerm(GRADE_KEY, TERM_KEY)!;
-  const [progressMap, setProgressMap] = useState<Record<string, SubjectProgress | null>>({});
-
-  useFocusEffect(
-    useCallback(() => {
-      let active = true;
-      getAllProgressForTerm(
-        GRADE_KEY,
-        TERM_KEY,
-        term.subjects.map((s) => s.key)
-      ).then((map) => {
-        if (active) setProgressMap(map);
-      });
-      return () => {
-        active = false;
-      };
-    }, [term])
-  );
 
   return (
     <View style={styles.container}>
@@ -48,9 +28,8 @@ export function HomeScreen({ navigation }: Props) {
           <SubjectCard
             subject={item}
             accentColor={subjectColors[item.key] ?? colors.primary}
-            progress={progressMap[item.key]}
             onPress={() =>
-              navigation.navigate('Quiz', {
+              navigation.navigate('SubjectSets', {
                 gradeKey: GRADE_KEY,
                 termKey: TERM_KEY,
                 subjectKey: item.key,

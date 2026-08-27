@@ -1,16 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { Subject } from '../data/types';
-import { SubjectProgress } from '../utils/storage';
 
 interface Props {
   subject: Subject;
   accentColor: string;
-  progress: SubjectProgress | null | undefined;
   onPress: () => void;
 }
 
-export function SubjectCard({ subject, accentColor, progress, onPress }: Props) {
+export function SubjectCard({ subject, accentColor, onPress }: Props) {
+  const totalQuestions = subject.questionSets.reduce((sum, s) => sum + s.questions.length, 0);
+
   return (
     <Pressable
       onPress={onPress}
@@ -24,19 +24,11 @@ export function SubjectCard({ subject, accentColor, progress, onPress }: Props) 
         <Text style={styles.description} numberOfLines={2}>
           {subject.description}
         </Text>
-        <Text style={styles.meta}>{subject.questions.length} questions</Text>
+        <Text style={styles.meta}>
+          {subject.questionSets.length} practice sets • {totalQuestions} questions
+        </Text>
       </View>
-      {progress ? (
-        <View style={[styles.badge, { backgroundColor: accentColor }]}>
-          <Text style={styles.badgeText}>
-            {progress.bestScore}/{progress.bestTotal}
-          </Text>
-        </View>
-      ) : (
-        <View style={[styles.badge, styles.badgeNew]}>
-          <Text style={styles.badgeNewText}>New</Text>
-        </View>
-      )}
+      <Text style={[styles.chevron, { color: accentColor }]}>›</Text>
     </Pressable>
   );
 }
@@ -86,24 +78,8 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginTop: 2,
   },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
-    minWidth: 52,
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: '#FFFFFF',
+  chevron: {
+    fontSize: 28,
     fontWeight: '700',
-    fontSize: 12,
-  },
-  badgeNew: {
-    backgroundColor: colors.border,
-  },
-  badgeNewText: {
-    color: colors.textMuted,
-    fontWeight: '700',
-    fontSize: 12,
   },
 });

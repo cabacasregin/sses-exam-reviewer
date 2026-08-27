@@ -6,12 +6,18 @@ export interface Question {
   explanation: string;
 }
 
+export interface QuestionSet {
+  key: string;
+  title: string;
+  questions: Question[];
+}
+
 export interface Subject {
   key: string;
   title: string;
   emoji: string;
   description: string;
-  questions: Question[];
+  questionSets: QuestionSet[];
 }
 
 export interface Term {

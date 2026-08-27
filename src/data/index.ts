@@ -1,10 +1,10 @@
 import { GradeLevel } from './types';
-import { mathQuestions } from './grade1/term1/math';
-import { scienceQuestions } from './grade1/term1/science';
-import { gmrcQuestions } from './grade1/term1/gmrc';
-import { makabansaQuestions } from './grade1/term1/makabansa';
-import { readingQuestions } from './grade1/term1/reading';
-import { languageQuestions } from './grade1/term1/language';
+import { mathQuestionSets } from './grade1/term1/math';
+import { scienceQuestionSets } from './grade1/term1/science';
+import { gmrcQuestionSets } from './grade1/term1/gmrc';
+import { makabansaQuestionSets } from './grade1/term1/makabansa';
+import { readingQuestionSets } from './grade1/term1/reading';
+import { languageQuestionSets } from './grade1/term1/language';
 
 export const gradeLevels: GradeLevel[] = [
   {
@@ -20,42 +20,42 @@ export const gradeLevels: GradeLevel[] = [
             title: 'Math',
             emoji: '🔢',
             description: 'Numbers, shapes, and basic addition & subtraction',
-            questions: mathQuestions,
+            questionSets: mathQuestionSets,
           },
           {
             key: 'science',
             title: 'Science',
             emoji: '🔬',
             description: 'Our senses, body parts, and living things',
-            questions: scienceQuestions,
+            questionSets: scienceQuestionSets,
           },
           {
             key: 'gmrc',
             title: 'GMRC',
             emoji: '🤝',
             description: 'Mabuting asal, paggalang, at pagpapahalaga sa sarili',
-            questions: gmrcQuestions,
+            questionSets: gmrcQuestionSets,
           },
           {
             key: 'makabansa',
             title: 'Makabansa',
             emoji: '🇵🇭',
-            description: 'Pagkilala sa sarili, pamilya, at damdamin',
-            questions: makabansaQuestions,
+            description: 'Ang bawat tao ay natatangi',
+            questionSets: makabansaQuestionSets,
           },
           {
             key: 'reading',
             title: 'Reading & Literacy',
             emoji: '📖',
             description: 'Alphabet, letter sounds, and simple words',
-            questions: readingQuestions,
+            questionSets: readingQuestionSets,
           },
           {
             key: 'language',
             title: 'Language',
             emoji: '🗣️',
             description: 'Naming words, greetings, and simple sentences',
-            questions: languageQuestions,
+            questionSets: languageQuestionSets,
           },
         ],
       },
