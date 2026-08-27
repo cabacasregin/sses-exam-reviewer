@@ -33,14 +33,14 @@ export const gradeLevels: GradeLevel[] = [
             key: 'gmrc',
             title: 'GMRC',
             emoji: '🤝',
-            description: 'Good Manners and Right Conduct',
+            description: 'Mabuting asal, paggalang, at pagpapahalaga sa sarili',
             questions: gmrcQuestions,
           },
           {
             key: 'makabansa',
             title: 'Makabansa',
             emoji: '🇵🇭',
-            description: 'Our country, symbols, and community helpers',
+            description: 'Pagkilala sa sarili, pamilya, at damdamin',
             questions: makabansaQuestions,
           },
           {

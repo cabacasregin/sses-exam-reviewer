@@ -66,10 +66,10 @@ export const mathQuestions: Question[] = [
   },
   {
     id: 'math-10',
-    question: 'Count by tens: 10, 20, ___?',
-    options: ['21', '30', '25'],
+    question: 'Which group has MORE: a set of 5 apples or a set of 8 apples?',
+    options: ['5 apples', '8 apples', 'They are equal'],
     correctIndex: 1,
-    explanation: 'When counting by tens, after 20 comes 30.',
+    explanation: '8 is more than 5, so the set of 8 apples has more.',
   },
   {
     id: 'math-11',
