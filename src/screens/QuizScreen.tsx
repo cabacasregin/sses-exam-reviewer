@@ -23,6 +23,14 @@ function shuffle<T>(items: T[]): T[] {
   return copy;
 }
 
+function shuffleQuestionOptions(question: Question): { options: string[]; correctIndex: number } {
+  const order = shuffle(question.options.map((_, i) => i));
+  return {
+    options: order.map((i) => question.options[i]),
+    correctIndex: order.indexOf(question.correctIndex),
+  };
+}
+
 export function QuizScreen({ route, navigation }: Props) {
   const { gradeKey, termKey, subjectKey, setKey } = route.params;
   const subject = findSubject(gradeKey, termKey, subjectKey);
@@ -49,10 +57,15 @@ export function QuizScreen({ route, navigation }: Props) {
   const isLastQuestion = currentIndex === questions.length - 1;
   const hasAnswered = selectedIndex !== null;
 
+  const { options: shuffledOptions, correctIndex: shuffledCorrectIndex } = useMemo(
+    () => shuffleQuestionOptions(currentQuestion),
+    [currentQuestion]
+  );
+
   function handleSelect(optionIndex: number) {
     if (hasAnswered) return;
     setSelectedIndex(optionIndex);
-    if (optionIndex === currentQuestion.correctIndex) {
+    if (optionIndex === shuffledCorrectIndex) {
       setCorrectCount((c) => c + 1);
     } else {
       setMissedIds((ids) => [...ids, currentQuestion.id]);
@@ -83,7 +96,7 @@ export function QuizScreen({ route, navigation }: Props) {
 
   function getOptionState(optionIndex: number): 'idle' | 'correct' | 'incorrect' | 'reveal-correct' {
     if (!hasAnswered) return 'idle';
-    if (optionIndex === currentQuestion.correctIndex) {
+    if (optionIndex === shuffledCorrectIndex) {
       return optionIndex === selectedIndex ? 'correct' : 'reveal-correct';
     }
     return optionIndex === selectedIndex ? 'incorrect' : 'reveal-correct';
@@ -107,9 +120,9 @@ export function QuizScreen({ route, navigation }: Props) {
         </View>
 
         <View style={styles.options}>
-          {currentQuestion.options.map((option, index) => (
+          {shuffledOptions.map((option, index) => (
             <OptionButton
-              key={option}
+              key={`${currentQuestion.id}-${index}`}
               label={option}
               letter={LETTERS[index]}
               state={getOptionState(index)}
@@ -124,12 +137,12 @@ export function QuizScreen({ route, navigation }: Props) {
               styles.explanationCard,
               {
                 backgroundColor:
-                  selectedIndex === currentQuestion.correctIndex ? colors.successBg : colors.dangerBg,
+                  selectedIndex === shuffledCorrectIndex ? colors.successBg : colors.dangerBg,
               },
             ]}
           >
             <Text style={styles.explanationTitle}>
-              {selectedIndex === currentQuestion.correctIndex ? 'Correct! 🎉' : 'Not quite.'}
+              {selectedIndex === shuffledCorrectIndex ? 'Correct! 🎉' : 'Not quite.'}
             </Text>
             <Text style={styles.explanationText}>{currentQuestion.explanation}</Text>
           </View>

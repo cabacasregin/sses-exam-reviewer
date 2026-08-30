@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
+import { WelcomeScreen } from '../screens/WelcomeScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { SubjectSetsScreen } from '../screens/SubjectSetsScreen';
 import { QuizScreen } from '../screens/QuizScreen';
@@ -13,12 +14,18 @@ export function RootNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="Welcome"
         screenOptions={{
           headerStyle: { backgroundColor: colors.primary },
           headerTintColor: '#FFFFFF',
           headerTitleStyle: { fontWeight: '700' },
         }}
       >
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Home"
           component={HomeScreen}

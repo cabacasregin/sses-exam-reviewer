@@ -1,5 +1,23 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const LEARNER_NAME_KEY = 'learnerName';
+
+export async function getLearnerName(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(LEARNER_NAME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export async function saveLearnerName(name: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(LEARNER_NAME_KEY, name);
+  } catch {
+    // Ignore storage errors; the name simply won't persist this session.
+  }
+}
+
 export interface SetProgress {
   bestScore: number;
   bestTotal: number;
