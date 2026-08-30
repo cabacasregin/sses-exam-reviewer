@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { findSubject } from '../data';
 import { SetCard } from '../components/SetCard';
 import { colors, subjectColors } from '../theme/colors';
-import { getSetProgressForSubject, SetProgress } from '../utils/storage';
+import { subscribeApprovedSets } from '../services/content';
+import { subscribeLearnerProgress } from '../services/attempts';
+import { SetDoc, ProgressDoc } from '../services/types';
+import { useAuth } from '../context/AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SubjectSets'>;
 
@@ -14,25 +16,23 @@ export function SubjectSetsScreen({ route, navigation }: Props) {
   const { gradeKey, termKey, subjectKey } = route.params;
   const subject = findSubject(gradeKey, termKey, subjectKey);
   const accentColor = subjectColors[subjectKey] ?? colors.primary;
-  const [progressMap, setProgressMap] = useState<Record<string, SetProgress | null>>({});
+  const { session } = useAuth();
 
-  useFocusEffect(
-    useCallback(() => {
-      if (!subject) return;
-      let active = true;
-      getSetProgressForSubject(
-        gradeKey,
-        termKey,
-        subjectKey,
-        subject.questionSets.map((s) => s.key)
-      ).then((map) => {
-        if (active) setProgressMap(map);
-      });
-      return () => {
-        active = false;
-      };
-    }, [subject, gradeKey, termKey, subjectKey])
-  );
+  const [sets, setSets] = useState<SetDoc[]>([]);
+  const [progressBySetId, setProgressBySetId] = useState<Record<string, ProgressDoc>>({});
+
+  useEffect(() => {
+    return subscribeApprovedSets(gradeKey, termKey, subjectKey, setSets);
+  }, [gradeKey, termKey, subjectKey]);
+
+  useEffect(() => {
+    if (!session) return;
+    return subscribeLearnerProgress(session.user.uid, (progress) => {
+      const map: Record<string, ProgressDoc> = {};
+      for (const p of progress) map[p.setId] = p;
+      setProgressBySetId(map);
+    });
+  }, [session]);
 
   if (!subject) {
     return (
@@ -51,14 +51,14 @@ export function SubjectSetsScreen({ route, navigation }: Props) {
         <Text style={styles.description}>{subject.description}</Text>
       </View>
       <FlatList
-        data={subject.questionSets}
-        keyExtractor={(item) => item.key}
+        data={sets}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
           <SetCard
             set={item}
             accentColor={accentColor}
-            progress={progressMap[item.key]}
+            progress={progressBySetId[item.id]}
             onPress={() =>
               navigation.navigate('Quiz', {
                 gradeKey,
@@ -69,6 +69,9 @@ export function SubjectSetsScreen({ route, navigation }: Props) {
             }
           />
         )}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>No practice sets are available yet.</Text>
+        }
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       />
     </View>
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textMuted,
     textAlign: 'center',
+    marginTop: 24,
   },
   header: {
     paddingHorizontal: 20,

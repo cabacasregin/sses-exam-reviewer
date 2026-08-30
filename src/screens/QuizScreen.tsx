@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { findSubject } from '../data';
-import { Question } from '../data/types';
 import { OptionButton } from '../components/OptionButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { colors, subjectColors } from '../theme/colors';
-import { saveSetResult } from '../utils/storage';
+import { subscribeApprovedQuestions, subscribeSet } from '../services/content';
+import { recordAttempt } from '../services/attempts';
+import { QuestionDoc, AttemptAnswer, SetDoc } from '../services/types';
+import { useAuth } from '../context/AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
 
@@ -23,7 +25,7 @@ function shuffle<T>(items: T[]): T[] {
   return copy;
 }
 
-function shuffleQuestionOptions(question: Question): { options: string[]; correctIndex: number } {
+function shuffleQuestionOptions(question: QuestionDoc): { options: string[]; correctIndex: number } {
   const order = shuffle(question.options.map((_, i) => i));
   return {
     options: order.map((i) => question.options[i]),
@@ -34,41 +36,82 @@ function shuffleQuestionOptions(question: Question): { options: string[]; correc
 export function QuizScreen({ route, navigation }: Props) {
   const { gradeKey, termKey, subjectKey, setKey } = route.params;
   const subject = findSubject(gradeKey, termKey, subjectKey);
-  const set = subject?.questionSets.find((s) => s.key === setKey);
   const accentColor = subjectColors[subjectKey] ?? colors.primary;
+  const { session } = useAuth();
 
-  const questions: Question[] = useMemo(() => shuffle(set?.questions ?? []), [set]);
+  const [set, setSet] = useState<SetDoc | null>(null);
+  const [liveQuestions, setLiveQuestions] = useState<QuestionDoc[] | null>(null);
+  const [questions, setQuestions] = useState<QuestionDoc[]>([]);
+
+  useEffect(() => {
+    return subscribeSet(gradeKey, termKey, subjectKey, setKey, setSet);
+  }, [gradeKey, termKey, subjectKey, setKey]);
+
+  useEffect(() => {
+    return subscribeApprovedQuestions(gradeKey, termKey, subjectKey, setKey, (fetched) => {
+      setLiveQuestions(fetched);
+    });
+  }, [gradeKey, termKey, subjectKey, setKey]);
+
+  // Freeze the shuffled question order once loaded, instead of re-shuffling
+  // on every live-data update.
+  useEffect(() => {
+    if (liveQuestions && questions.length === 0) {
+      setQuestions(shuffle(liveQuestions));
+    }
+  }, [liveQuestions, questions.length]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [missedIds, setMissedIds] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<AttemptAnswer[]>([]);
+  const [missedQuestions, setMissedQuestions] = useState<QuestionDoc[]>([]);
   const [correctCount, setCorrectCount] = useState(0);
   const [saving, setSaving] = useState(false);
 
-  if (!subject || !set || questions.length === 0) {
+  const currentQuestion = questions[currentIndex] ?? null;
+  const hasAnswered = selectedIndex !== null;
+
+  const shuffledQuestion = useMemo(
+    () => (currentQuestion ? shuffleQuestionOptions(currentQuestion) : null),
+    [currentQuestion]
+  );
+
+  if (liveQuestions === null) {
     return (
       <View style={styles.center}>
-        <Text style={styles.emptyText}>This subject has no questions yet.</Text>
+        <Text style={styles.emptyText}>Loading questions...</Text>
       </View>
     );
   }
 
-  const currentQuestion = questions[currentIndex];
-  const isLastQuestion = currentIndex === questions.length - 1;
-  const hasAnswered = selectedIndex !== null;
+  if (!subject || !set || questions.length === 0 || !currentQuestion || !shuffledQuestion) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.emptyText}>This subject has no approved questions yet.</Text>
+      </View>
+    );
+  }
 
-  const { options: shuffledOptions, correctIndex: shuffledCorrectIndex } = useMemo(
-    () => shuffleQuestionOptions(currentQuestion),
-    [currentQuestion]
-  );
+  const isLastQuestion = currentIndex === questions.length - 1;
+  const { options: shuffledOptions, correctIndex: shuffledCorrectIndex } = shuffledQuestion;
 
   function handleSelect(optionIndex: number) {
     if (hasAnswered) return;
     setSelectedIndex(optionIndex);
-    if (optionIndex === shuffledCorrectIndex) {
+    const correct = optionIndex === shuffledCorrectIndex;
+    setAnswers((a) => [
+      ...a,
+      {
+        questionId: currentQuestion.id,
+        selectedIndex: optionIndex,
+        correctIndex: shuffledCorrectIndex,
+        correct,
+      },
+    ]);
+    if (correct) {
       setCorrectCount((c) => c + 1);
     } else {
-      setMissedIds((ids) => [...ids, currentQuestion.id]);
+      setMissedQuestions((qs) => [...qs, currentQuestion]);
     }
   }
 
@@ -79,9 +122,21 @@ export function QuizScreen({ route, navigation }: Props) {
       return;
     }
 
-    setSaving(true);
-    await saveSetResult(gradeKey, termKey, subjectKey, setKey, correctCount, questions.length);
-    setSaving(false);
+    if (session) {
+      setSaving(true);
+      await recordAttempt(
+        session.user.uid,
+        session.displayName,
+        gradeKey,
+        termKey,
+        subjectKey,
+        setKey,
+        correctCount,
+        questions.length,
+        answers
+      );
+      setSaving(false);
+    }
 
     navigation.replace('Results', {
       gradeKey,
@@ -90,7 +145,13 @@ export function QuizScreen({ route, navigation }: Props) {
       setKey,
       score: correctCount,
       total: questions.length,
-      missedQuestionIds: missedIds,
+      missedQuestions: missedQuestions.map((q) => ({
+        id: q.id,
+        question: q.question,
+        options: q.options,
+        correctIndex: q.correctIndex,
+        explanation: q.explanation,
+      })),
     });
   }
 

@@ -22,22 +22,19 @@ function getStarCount(percent: number): number {
 }
 
 export function ResultsScreen({ route, navigation }: Props) {
-  const { gradeKey, termKey, subjectKey, setKey, score, total, missedQuestionIds } = route.params;
+  const { gradeKey, termKey, subjectKey, setKey, score, total, missedQuestions } = route.params;
   const subject = findSubject(gradeKey, termKey, subjectKey);
-  const set = subject?.questionSets.find((s) => s.key === setKey);
   const accentColor = subjectColors[subjectKey] ?? colors.primary;
   const percent = total > 0 ? Math.round((score / total) * 100) : 0;
   const { emoji, message } = getRatingMessage(percent);
   const starCount = getStarCount(percent);
-
-  const missedQuestions = (set?.questions ?? []).filter((q) => missedQuestionIds.includes(q.id));
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={[styles.summaryCard, { borderColor: accentColor }]}>
         <Text style={styles.bigEmoji}>{emoji}</Text>
         <Text style={styles.subjectTitle}>
-          {subject?.emoji} {subject?.title} • {set?.title}
+          {subject?.emoji} {subject?.title}
         </Text>
         <Text style={styles.scoreText}>
           {score} / {total}
