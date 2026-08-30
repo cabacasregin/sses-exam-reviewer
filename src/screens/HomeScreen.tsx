@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { findTerm } from '../data';
 import { SubjectCard } from '../components/SubjectCard';
 import { colors, subjectColors } from '../theme/colors';
+import { getLearnerName } from '../utils/storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -12,12 +14,19 @@ const TERM_KEY = 'term1';
 
 export function HomeScreen({ navigation }: Props) {
   const term = findTerm(GRADE_KEY, TERM_KEY)!;
+  const [learnerName, setLearnerName] = useState<string | null>(null);
+
+  useEffect(() => {
+    getLearnerName().then(setLearnerName);
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.eyebrow}>Special Science Elementary School</Text>
-        <Text style={styles.title}>Grade 1 Exam Reviewer</Text>
+        <Text style={styles.title}>
+          {learnerName ? `Hi, ${learnerName}! 👋` : 'Grade 1 Exam Reviewer'}
+        </Text>
         <Text style={styles.subtitle}>{term.title}</Text>
       </View>
       <FlatList
