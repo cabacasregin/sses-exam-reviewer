@@ -1,12 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
-import { QuestionSet } from '../data/types';
-import { SetProgress } from '../utils/storage';
+
+interface SetSummary {
+  title: string;
+  questionCount: number;
+}
+
+interface ProgressSummary {
+  bestScore: number;
+  bestTotal: number;
+}
 
 interface Props {
-  set: QuestionSet;
+  set: SetSummary;
   accentColor: string;
-  progress: SetProgress | null | undefined;
+  progress: ProgressSummary | null | undefined;
   onPress: () => void;
 }
 
@@ -18,7 +26,7 @@ export function SetCard({ set, accentColor, progress, onPress }: Props) {
     >
       <View style={styles.textWrap}>
         <Text style={styles.title}>{set.title}</Text>
-        <Text style={styles.meta}>{set.questions.length} questions</Text>
+        <Text style={styles.meta}>{set.questionCount} questions</Text>
       </View>
       {progress ? (
         <View style={[styles.badge, { backgroundColor: accentColor }]}>

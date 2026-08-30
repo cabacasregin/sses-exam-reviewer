@@ -1,0 +1,70 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isTeacher() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        myRole() == 'teacher';
+    }
+
+    // Account documents. Anyone can create their own on sign-up (the app
+    // gates the teacher role behind an invite code before it ever calls
+    // this), but nobody can change their own role afterwards, and nobody
+    // can delete an account doc from the client.
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow create: if isOwner(uid) && request.resource.data.role in ['teacher', 'learner'];
+      allow update: if isOwner(uid) && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    // Practice sets. Learners only ever see approved sets; teachers see and
+    // manage everything (including pending drafts).
+    match /sets/{setId} {
+      allow read: if isTeacher() || resource == null || resource.data.get('status', null) == 'approved';
+      allow create, update, delete: if isTeacher();
+    }
+
+    // Questions. Same visibility rule as sets.
+    match /questions/{questionId} {
+      allow read: if isTeacher() || resource == null || resource.data.get('status', null) == 'approved';
+      allow create, update, delete: if isTeacher();
+    }
+
+    // Quiz attempts are write-once records a learner creates about
+    // themselves; teachers can read all of them for analytics, a learner
+    // can read only their own, and nobody can edit or delete history.
+    // `resource == null` covers reading a not-yet-created document (e.g. a
+    // getDoc lookup before the very first write), which otherwise throws
+    // instead of just resolving to "not found".
+    match /attempts/{attemptId} {
+      allow create: if isSignedIn() && request.resource.data.learnerUid == request.auth.uid;
+      allow read: if isTeacher() ||
+        (isSignedIn() && (resource == null || resource.data.get('learnerUid', null) == request.auth.uid));
+      allow update, delete: if false;
+    }
+
+    // Best/last-score summary per learner per set, kept up to date by the
+    // learner's own device as they play, and read by teachers for the
+    // learner monitoring screens.
+    match /progress/{progressId} {
+      allow read: if isTeacher() ||
+        (isSignedIn() && (resource == null || resource.data.get('learnerUid', null) == request.auth.uid));
+      allow create, update: if isSignedIn() && request.resource.data.learnerUid == request.auth.uid;
+      allow delete: if false;
+    }
+  }
+}
